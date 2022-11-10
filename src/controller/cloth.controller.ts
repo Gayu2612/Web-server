@@ -62,7 +62,7 @@ export let updatecloth = async (req, res, next) => {
         try {
             const clothData: ClothDocument = req.body;
             const updateclothData = new Cloth(clothData);
-            let insertinvoic = await updateclothData.updateOne({
+            let insertinvoic = await updateclothData.findByIdAndUpdate({_id:updateclothData._id},{
                 $set: {
 
                     imageUrl: clothData.imageUrl,
