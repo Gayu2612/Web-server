@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllcloth,getSingleCloth,savecloth, updatecloth } from '../controller/cloth.controller';
+import { deleteCloth, getAllcloth,getSingleCloth,savecloth, updateCloth } from '../controller/cloth.controller';
 
 const router: Router = Router();
 
@@ -7,6 +7,6 @@ const router: Router = Router();
 router.post('/', savecloth)
 router.get('/', getAllcloth)
 router.get('/getSingleCloth',getSingleCloth)
-router.put('/',updatecloth)
-
+router.put('/',updateCloth)
+router.delete('/',deleteCloth)
 export default router;

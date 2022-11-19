@@ -20,7 +20,7 @@ export const savecloth = async (req, res, next) => {
         try {
             const ClothDetails: ClothDocument = req.body;
             const createCloth = new Cloth(ClothDetails);
-          
+
             const data = await createCloth.save();
             response(req, res, activity, true, 200, data, clientError.success.savedSuccessfully);
         } catch (err: any) {
@@ -56,32 +56,56 @@ export const getSingleCloth = async (req, res, next) => {
 };
 
 
-export let updatecloth = async (req, res, next) => {
+export let updateCloth = async (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
+            console.log('ttfhf', req.body);
+
             const clothData: ClothDocument = req.body;
-            const updateclothData = new Cloth(clothData);
-            let insertinvoic = await updateclothData.findByIdAndUpdate({_id:updateclothData._id},{
+            const updatClothData = new Cloth(clothData);
+            let insertCloth = await updatClothData.updateOne({
                 $set: {
 
                     imageUrl: clothData.imageUrl,
-                    clothName:clothData.clothName,
-                    price:clothData.price,
-                    description:clothData.description,
+                    clothName: clothData.clothName,
+                    price: clothData.price,
+                    description: clothData.description,
                     category: clothData.category,
-                    brand:clothData.brand,
-                    quantity:clothData.quantity,
-                    maxQuantity:clothData.maxQuantity,
-                    type:clothData.type,
-                    discount:clothData.discount
+                    brand: clothData.brand,
+                    quantity: clothData.quantity,
+                    maxQuantity: clothData.maxQuantity,
+                    type: clothData.type,
+                    discount: clothData.discount
                 }
             });
-            response(req, res, activity, true, 200, insertinvoic, clientError.success.updateSuccess);
+            response(req, res, activity, true, 200, insertCloth, clientError.success.updateSuccess);
         } catch (err: any) {
             response(req, res, activity, false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
         response(req, res, activity, false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
+};
+
+
+
+export const deleteCloth = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const data = await Cloth.findByIdAndUpdate({ _id: req.query._id }, {
+                $set: {
+                    isDeleted: false,
+                    modifiedOn: req.body.modifiedOn,
+                    modifiedBy:req.body. modifiedBy,
+                }
+            });
+            response(req, res, activity, true, 200, data, clientError.success.fetchedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    }
+    else { response(req, res, activity, false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped())) }
 };
