@@ -90,22 +90,20 @@ export let updateCloth = async (req, res, next) => {
 
 
 
-export const deleteCloth = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const data = await Cloth.findByIdAndUpdate({ _id: req.query._id }, {
-                $set: {
-                    isDeleted: false,
-                    modifiedOn: req.body.modifiedOn,
-                    modifiedBy:req.body. modifiedBy,
-                }
-            });
-            response(req, res, activity, true, 200, data, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, false, 500, {}, errorMessage.internalServer, err.message);
-        }
+export let deleteCloth = async (req, res, next) => {
+    try {
+        let { modifiedOn, modifiedBy } = req.body;
+        let id = req.query._id;
+        const data = await Cloth.findByIdAndUpdate({ _id: id }, {
+            $set: {
+                isDeleted: true,
+                modifiedOn: modifiedOn,
+                modifiedBy: modifiedBy,
+            }
+        })
+        response(req, res, activity, true, 200, data, clientError.success.deleteSuccess)
     }
-    else { response(req, res, activity, false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped())) }
+    catch (err: any) {
+        response(req, res, activity, false, 500, {}, errorMessage.internalServer, err.message);
+    }
 };

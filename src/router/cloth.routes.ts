@@ -8,5 +8,5 @@ router.post('/', savecloth)
 router.get('/', getAllcloth)
 router.get('/getSingleCloth',getSingleCloth)
 router.put('/',updateCloth)
-router.delete('/',deleteCloth)
+router.delete('/deleteCloth',deleteCloth)
 export default router;

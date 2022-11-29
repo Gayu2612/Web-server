@@ -12,6 +12,13 @@ export interface ClothDocument extends mongoose.Document {
     maxQuantity?:number;
     type?: string;
     discount?: number;
+    isDeleted?: boolean;
+    status?: number;
+    default?: number;
+    createdOn?: Date;
+    createdBy?: string;
+    modifiedOn?: Date;
+    modifiedBy?: string;
   
 }
 const clothSchema = new mongoose.Schema({
@@ -25,6 +32,12 @@ const clothSchema = new mongoose.Schema({
     quantity:{type:Number,default:1},
     maxQuantity:{type:Number},
     type:{type:String},
-    discount:{type:String}
+    discount:{type:String},
+    isDeleted: { type: Boolean, default: false },
+    status: { type: Number, default: 1 },
+    createdOn: { type: Date },
+    createdBy: { type: String },
+    modifiedOn: { type: Date },
+    modifiedBy: { type: String },
 })
 export const Cloth = mongoose.model('cloth', clothSchema)
